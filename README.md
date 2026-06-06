@@ -72,6 +72,7 @@ arm-mppt-boost-converter/
 │       ├── system_stm32f3xx.c      ← CMSIS system init
 │       └── STM32F303K8Tx_FLASH.ld  ← Linker script (64KB Flash, 12KB RAM)
 ├── Makefile                ← arm-none-eabi-gcc build system
+├── MPPT_Report.pdf
 └── README.md
 ```
 
