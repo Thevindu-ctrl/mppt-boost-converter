@@ -1,0 +1,59 @@
+##############################################################################
+# .github/workflows/build.yml
+# Continuous integration: verify firmware compiles cleanly on every push.
+# Uses the arm-none-eabi-gcc toolchain and fetches STM32F3 CMSIS headers
+# from their official ST repository.
+##############################################################################
+
+name: Build Firmware
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    name: Compile for STM32F303K8T
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout firmware source
+        uses: actions/checkout@v4
+
+      - name: Install arm-none-eabi toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi
+
+      - name: Fetch CMSIS Core headers (ARM-software)
+        run: |
+          git clone --depth 1 \
+            https://github.com/ARM-software/CMSIS_5.git \
+            ../cmsis_core
+
+      - name: Fetch STM32F3 device headers (STMicroelectronics)
+        run: |
+          git clone --depth 1 \
+            https://github.com/STMicroelectronics/cmsis-device-f3.git \
+            ../cmsis-device-f3
+
+      - name: Build firmware
+        run: |
+          make \
+            CMSIS_CORE_INC=../cmsis_core/CMSIS/Core/Include \
+            CMSIS_DEVICE_INC=../cmsis-device-f3/Include \
+            -j$(nproc)
+
+      - name: Print binary size
+        run: arm-none-eabi-size build/mppt_boost.elf
+
+      - name: Upload build artefacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-binaries
+          path: |
+            build/mppt_boost.elf
+            build/mppt_boost.hex
+            build/mppt_boost.bin
