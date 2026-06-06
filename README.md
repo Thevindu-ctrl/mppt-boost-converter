@@ -186,7 +186,7 @@ V=15.21   I=0.659   P=10.033   D=50.0   ← MPP locked (ΔP < 5mW dead-zone)
 |--|--|--|--|
 | Complexity | Low | High | Very Low |
 | Steady-state oscillation | Yes, ±0.5% | No | No |
-| Fast irradiance tracking | ❌ Can fail | ✅ Correct | ❌ Slow |
+| Fast irradiance tracking |  Can fail |  Correct |  Slow |
 | Sensor requirements | V + I | V + I | V only |
 | Recommended for | Stable conditions | Cloudy/variable | Cost-sensitive |
 
