@@ -110,6 +110,7 @@ LDSCRIPT := firmware/device/STM32F303K8Tx_FLASH.ld
 
 LDFLAGS := $(MCU) \
     -specs=nano.specs \
+    -specs=nosys.specs \
     -T$(LDSCRIPT) \
     -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref \
     -Wl,--gc-sections \
